@@ -11,12 +11,6 @@
     + 终点-dstAddr  
 ## 主要接口  
 ```
-Connection {
-    标准net.Connection
-    EndAddr()
-}
-```
-```
 Server {
     Listen() -> Listener
 }
@@ -28,9 +22,9 @@ Listener {
 }
 ```
 ```
-Listener {
-    Accept() -> Connection
-    Close()  
+Connection {
+    标准net.Connection
+    EndAddr()
 }
 ```
 ```

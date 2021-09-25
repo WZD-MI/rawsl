@@ -1,30 +1,34 @@
+use crate::listener::a_tcp_listener::ATCPListener;
+use crate::listener::Listener;
+use crate::server::Server;
 use std::net::TcpListener;
 pub struct TCP {
-    ip: String,
+    ip: &'static str,
     port: u16,
 }
-use crate::server::server::Server;
 impl TCP {
-    pub fn new(ip: String, port: u16) -> TCP {
+    pub fn new(ip: &'static str, port: u16) -> TCP {
         TCP { ip: ip, port: port }
     }
 }
 
 impl Server for TCP {
-    fn listen(&self) -> TcpListener {
+    fn listen(&self) -> Box<dyn Listener> {
         let str = format!("{}:{}", self.ip, self.port);
         println!("listen: {}", str);
         let listener = TcpListener::bind(str).unwrap();
-        listener
+        let al = ATCPListener::new(listener);
+        Box::new(al)
     }
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::server::{server::Server, tcp::TCP};
+    use crate::server::{tcp::TCP, Server};
     #[test]
     fn test_tcp() {
-        let tcp = TCP::new("0.0.0.0".to_string(), 60080);
+        let s = "0.0.0.0";
+        let tcp: Box<dyn Server> = Box::new(TCP::new(s, 60080));
         let l = tcp.listen();
         match l.accept() {
             Ok((_socket, addr)) => {
