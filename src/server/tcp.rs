@@ -3,11 +3,11 @@ use crate::listener::Listener;
 use crate::server::Server;
 use std::net::TcpListener;
 pub struct TCP {
-    ip: &'static str,
+    ip: String,
     port: u16,
 }
 impl TCP {
-    pub fn new(ip: &'static str, port: u16) -> TCP {
+    pub fn new(ip: String, port: u16) -> TCP {
         TCP { ip: ip, port: port }
     }
 }
@@ -27,7 +27,7 @@ mod tests {
     use crate::server::{tcp::TCP, Server};
     #[test]
     fn test_tcp() {
-        let s = "0.0.0.0";
+        let s = "0.0.0.0".to_string();
         let tcp: Box<dyn Server> = Box::new(TCP::new(s, 60080));
         let l = tcp.listen();
         match l.accept() {

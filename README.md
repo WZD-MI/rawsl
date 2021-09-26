@@ -34,6 +34,6 @@ Dialer {
 ```
 ```
 Router {
-    Route(Context, Addr) -> Context
+    Route(Addr) -> String
 }
 ```

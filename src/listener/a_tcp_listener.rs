@@ -1,4 +1,4 @@
-use crate::connection::Connection;
+use crate::connection::{a_tcp::ATCP, Connection};
 use crate::listener::Listener;
 use std::io::Result;
 use std::net::{SocketAddr, TcpListener};
@@ -13,7 +13,7 @@ impl ATCPListener {
 impl Listener for ATCPListener {
     fn accept(&self) -> Result<(Box<dyn Connection>, SocketAddr)> {
         match self.l.accept() {
-            Ok((socket, addr)) => Result::Ok((Box::new(socket), addr)),
+            Ok((socket, addr)) => Result::Ok((Box::new(ATCP::new(socket, addr)), addr)),
             Err(e) => Result::Err(e),
         }
     }
